@@ -8,7 +8,6 @@ import {
   MenubarItem,
 } from "@/components/ui/menubar";
 import { Menu, User } from "lucide-react";
-import { Menu, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -34,8 +33,6 @@ const UserMenu = () => {
         <MenubarTrigger className="md:block rounded-full bg-gray-100 hover:bg-gray-200 transition flex items-center justify-center">
           <User className="w-5 h-5 text-gray-700 hidden md:flex" />
           <Menu className="w-5 h-5 md:hidden" />
-          <User className="w-5 h-5 text-gray-700 hidden md:flex" />
-          <Menu className="w-5 h-5 md:hidden"/>
         </MenubarTrigger>
         <MenubarContent className="w-40">
           {role === "User" && (
@@ -46,29 +43,17 @@ const UserMenu = () => {
                 </Link>
               </MenubarItem>
               <MenubarItem className="hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md md:hidden">
-                <Link href={"/user/article"} className="w-full">
+                <Link href="/user/article" className="w-full">
                   Article
                 </Link>
               </MenubarItem>
             </>
           )}
-          <MenubarItem className="hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md ">
+          <MenubarItem className="hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
             <Link
               href={role === "User" ? "/user/profile" : "/admin/profile"}
               className="w-full"
             >
-          <MenubarItem className="hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md md:hidden">
-            <Link href='/user/home' className="w-full">
-              Home
-            </Link>
-          </MenubarItem>
-          <MenubarItem className="hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md md:hidden">
-            <Link href={'/user/article'} className="w-full">
-              Article
-            </Link>
-          </MenubarItem>
-          <MenubarItem className="hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md ">
-            <Link href={role === "User" ? "/user/profile" : "/admin/profile" } className="w-full">
               Profile
             </Link>
           </MenubarItem>
