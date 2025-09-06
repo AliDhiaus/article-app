@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { categorySchema } from "@/lib/schemas";
 import { api, apiAuth } from "@/lib/api";
+import { Loader } from "lucide-react";
 
 const page = () => {
   const form = useForm({
@@ -22,9 +23,10 @@ const page = () => {
       name: "",
     },
   });
-  
+
   const [editingCategory, setEditingCategory] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [token, setToken] = useState(null);
   const [current, setCurrent] = useState(1);
@@ -38,6 +40,8 @@ const page = () => {
         setCategories(response.data.data);
       } catch (err) {
         console.log(err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -142,13 +146,19 @@ const page = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader className="w-12 h-12 animate-spin text-gray-500" />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="border-b-2">
         <h1 className="text-2xl font-bold">Manajemen Categori</h1>
-        <p className="text-gray-500 pb-2">
-          Kelola data kategori dengan mudah.
-        </p>
+        <p className="text-gray-500 pb-2">Kelola data kategori dengan mudah.</p>
       </div>
       <Card className="flex-1">
         <CardHeader>

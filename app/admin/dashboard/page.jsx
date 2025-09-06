@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, FileText, Layers } from "lucide-react";
+import { Users, FileText, Layers, Loader } from "lucide-react";
 import { api, apiAuth } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
 import {
@@ -16,6 +16,7 @@ import {
 const DashboardPage = () => {
   const [category, setCategory] = useState([]);
   const [article, setArticle] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +29,8 @@ const DashboardPage = () => {
         setArticle(articleRes.data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false)
       }
     };
 
@@ -39,6 +42,14 @@ const DashboardPage = () => {
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       )
     : [];
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader className="w-12 h-12 animate-spin text-gray-500" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -89,9 +100,7 @@ const DashboardPage = () => {
               <TableBody>
                 {activyArtikel?.slice(0, 5).map((item, i) => (
                   <TableRow key={item.id}>
-                    <TableCell className="px-4 py-2 border">
-                      {++i}
-                    </TableCell>
+                    <TableCell className="px-4 py-2 border">{++i}</TableCell>
                     <TableCell className="px-4 py-2 border w-full text-wrap truncate">
                       {item.title}
                     </TableCell>

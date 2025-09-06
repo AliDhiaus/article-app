@@ -114,7 +114,7 @@ const RegisterPage = () => {
                       className="mt-1"
                     />
                   </FormControl>
-                  <FormDescription>Minimum 6 characters.</FormDescription>
+                  <FormDescription>Minimum 6 unik characters.</FormDescription>
                   <FormMessage>
                     {form.formState.errors.password?.message}
                   </FormMessage>

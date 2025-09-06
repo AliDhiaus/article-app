@@ -18,6 +18,7 @@ import Swal from "sweetalert2";
 import { loginSchema } from "@/lib/schemas";
 import ButtonSubmit from "@/components/ButtonSubmit";
 import { api } from "@/lib/api";
+import Link from "next/link";
 
 const LoginPage = () => {
   const form = useForm({
@@ -132,20 +133,12 @@ const LoginPage = () => {
 
         <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
           Don't have an account?{" "}
-          <a
+          <Link
             href="/register"
             className="text-blue-600 dark:text-blue-400 font-medium hover:underline"
           >
             Register
-          </a>
-        </p>
-        <p className="mt-2 text-center text-sm text-gray-500 dark:text-gray-400">
-          <a
-            href="/forgot-password"
-            className="text-blue-600 dark:text-blue-400 font-medium hover:underline"
-          >
-            Forgot password?
-          </a>
+          </Link>
         </p>
       </div>
     </div>

@@ -4,11 +4,13 @@ import { useParams } from "next/navigation";
 import { api } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
+import { Loader } from "lucide-react";
 
 const ViewArticle = () => {
   const params = useParams();
   const articleId = params.id;
   const [article, setArticle] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,13 +19,24 @@ const ViewArticle = () => {
         setArticle(response.data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false)
       }
     };
     fetchData();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader className="w-12 h-12 animate-spin text-gray-500" />
+      </div>
+    );
+  }
+
   return (
     <>
+      <h1 className="text-3xl text-center font-bold mb-6">View Article</h1>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">{article.title}</CardTitle>

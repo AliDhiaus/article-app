@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Loader, Plus } from "lucide-react";
 import { api, apiAuth } from "@/lib/api";
 import TableData from "@/components/TableData";
 import { labelArticle } from "@/lib/label-tabel";
@@ -19,6 +19,7 @@ const Page = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [current, setCurrent] = useState(1);
   const rowsPerPage = 5;
@@ -38,6 +39,8 @@ const Page = () => {
         setCategories(categoryRes.data.data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false)
       }
     };
 
@@ -105,6 +108,14 @@ const Page = () => {
       }
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader className="w-12 h-12 animate-spin text-gray-500" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

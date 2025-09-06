@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { api } from "../../../lib/api";
 import { CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
-import { ArrowRight, Tag } from "lucide-react";
+import { ArrowRight, Loader, Tag } from "lucide-react";
 import PaginationWrapper from "@/components/PaginationWrapper";
 import Search from "@/components/Search";
 import { FilterCompo } from "@/components/FilterCompo";
@@ -17,6 +17,7 @@ const Page = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   const debouncedSearch = useDebounce(search, 400);
   const perPage = 9;
@@ -32,6 +33,8 @@ const Page = () => {
         setCategories(categoriesRes.data.data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false)
       }
     };
     fetchData();
@@ -59,10 +62,18 @@ const Page = () => {
     page * perPage
   );
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader className="w-12 h-12 animate-spin text-gray-500" />
+      </div>
+    );
+  }
+
   return (
     <div className="px-6">
       <header className="mb-8 text-center">
-        <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
+        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-gray-200 tracking-tight">
           Artikel & Kategori
         </h1>
         <p className="text-gray-600 mt-2 text-lg">

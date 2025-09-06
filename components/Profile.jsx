@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { apiAuth } from "@/lib/api";
+import { Loader } from "lucide-react";
 
 const Profile = () => {
   const [user, setUser] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,10 +16,20 @@ const Profile = () => {
         setUser(response.data);
       } catch (err) {
         console.log(err);
+      } finally {
+        setLoading(false)
       }
     };
     fetchData();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader className="w-12 h-12 animate-spin text-gray-500" />
+      </div>
+    );
+  }
 
   return (
     <>
