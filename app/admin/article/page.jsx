@@ -40,7 +40,7 @@ const Page = () => {
       } catch (err) {
         console.error(err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
 
@@ -132,7 +132,7 @@ const Page = () => {
         >
           <Link href="/admin/article/add">
             <Plus className="w-5 h-5" />
-            Article
+            <span className="hidden md:flex">Article</span>
           </Link>
         </Button>
 
@@ -152,24 +152,20 @@ const Page = () => {
         </div>
       </div>
 
-      {article.length !== 0 ? (
-        <div>
-          <TableData
-            columns={labelArticle}
-            rows={currentRows}
-            onView={handleView}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-          <PaginationWrapper
-            current={current}
-            total={totalPages}
-            onChange={setCurrent}
-          />
-        </div>
-      ) : (
-        <p className="text-center">Tidak ada data yang tersedia</p>
-      )}
+      <div>
+        <TableData
+          columns={labelArticle}
+          rows={currentRows}
+          onView={handleView}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+        <PaginationWrapper
+          current={current}
+          total={totalPages}
+          onChange={setCurrent}
+        />
+      </div>
     </div>
   );
 };

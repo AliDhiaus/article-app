@@ -20,7 +20,7 @@ const UserMenu = () => {
   useEffect(() => {
     setRole(Cookies.get("role"));
   }, []);
-  
+
   const handleLogout = () => {
     Cookies.remove("token", { path: "/" });
     Cookies.remove("role", { path: "/" });
@@ -31,21 +31,10 @@ const UserMenu = () => {
     <Menubar className="rounded-full border-0">
       <MenubarMenu>
         <MenubarTrigger className="md:block rounded-full bg-gray-100 hover:bg-gray-200 transition flex items-center justify-center">
-          <User className="w-5 h-5 text-gray-700 hidden md:flex" />
-          <Menu className="w-5 h-5 md:hidden"/>
+          <User className="w-5 h-5 text-gray-700" />
         </MenubarTrigger>
         <MenubarContent className="w-40">
-          <MenubarItem className="hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md md:hidden">
-            <Link href='/user/home' className="w-full">
-              Home
-            </Link>
-          </MenubarItem>
-          <MenubarItem className="hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md md:hidden">
-            <Link href={'/user/article'} className="w-full">
-              Article
-            </Link>
-          </MenubarItem>
-          <MenubarItem className="hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md ">
+          <MenubarItem className="hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
             <Link href={role === "User" ? "/user/profile" : "/admin/profile" } className="w-full">
               Profile
             </Link>

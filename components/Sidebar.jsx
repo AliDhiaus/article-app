@@ -15,19 +15,18 @@ const Sidebar = () => {
   
   return (
     <aside className="shadow-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col">
-      <nav className="flex-1 px-2 py-4">
-        <NavigationMenu className="flex flex-col gap-1 w-full">
+      <nav className="flex-1 mt-2 p-1">
+        <NavigationMenu className="flex flex-col gap-2 w-full">
           {listNavAdmin.map((item, i) => {
             const isActive = pathname === item.path;
             return (
               <NavigationMenuLink
                 key={i}
                 asChild
-                className="w-full"
               >
                 <Link
                   href={item.path}
-                  className={`flex flex-row w-full items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                  className={`flex flex-row w-full items-center gap-3 md:px-4 md:py-2 text-sm font-medium transition-all duration-200
                     ${
                       isActive
                         ? "bg-indigo-100 text-indigo-600 dark:bg-indigo-900 dark:text-indigo-300"

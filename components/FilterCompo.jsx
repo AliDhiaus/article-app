@@ -14,7 +14,7 @@ export const FilterCompo = ({ value, onChange, categories }) => {
         <SelectValue placeholder="Pilih kategori" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="all">Semua Kategori</SelectItem>
+        <SelectItem value="all">All</SelectItem>
         {categories.map((cat) => (
           <SelectItem key={cat.id} value={cat.id || 0}>
             {cat.name}

@@ -189,35 +189,31 @@ const page = () => {
           </FormProvider>
         </CardContent>
       </Card>
-      {categories && categories.length !== 0 ? (
-        <Card className="flex-2">
-          <CardHeader className="flex justify-between items-center">
-            <CardTitle>Category List</CardTitle>
-            <Search
-              labelSearch="Search by name..."
-              onSearch={(value) => {
-                setQuery(value);
-                setCurrent(1);
-              }}
-            />
-          </CardHeader>
-          <CardContent>
-            <TableData
-              rows={currentRows}
-              columns={labelCategory}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
-            <PaginationWrapper
-              current={current}
-              total={totalPages}
-              onChange={setCurrent}
-            />
-          </CardContent>
-        </Card>
-      ) : (
-        <p className="text-center">Tidak ada data yang tersedia</p>
-      )}
+      <Card className="flex-2">
+        <CardHeader className="flex justify-between items-center">
+          <CardTitle>Category List</CardTitle>
+          <Search
+            labelSearch="Search by name..."
+            onSearch={(value) => {
+              setQuery(value);
+              setCurrent(1);
+            }}
+          />
+        </CardHeader>
+        <CardContent>
+          <TableData
+            rows={currentRows}
+            columns={labelCategory}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+          <PaginationWrapper
+            current={current}
+            total={totalPages}
+            onChange={setCurrent}
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 };
