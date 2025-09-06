@@ -1,40 +1,101 @@
-<<<<<<< HEAD
-# article-app
-=======
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Article App
 
-## Getting Started
+**Author:** Ali Dhiaus Syamsi
+**Live Demo:** [https://article-app-bay.vercel.app/login](https://article-app-bay.vercel.app/login)
+**Repository:** [https://github.com/AliDhiaus/article-app](https://github.com/AliDhiaus/article-app)
 
-First, run the development server:
+---
+
+## Deskripsi Projek
+
+Article App adalah aplikasi web untuk mengelola dan mempublikasikan artikel secara profesional.
+Fitur utamanya meliputi CRUD artikel, login/authentication, dan validasi formulir.
+Dibuat menggunakan **Next.js**, **React**, **Tailwind CSS**, **Shadcn UI**, serta di-deploy di **Vercel**.
+
+---
+
+## Fitur Utama
+
+* Login dan autentikasi menggunakan Cookies
+* Formulir dengan validasi menggunakan `react-hook-form` + `zod`
+* CRUD artikel (buat, edit, hapus, lihat)
+* Dashboard responsif menggunakan Shadcn UI
+* Live preview artikel
+
+---
+
+## Teknologi & Dependencies
+
+* **Frontend:** Next.js, React, Tailwind CSS
+* **UI Components:** Shadcn UI
+* **Form Handling:** react-hook-form
+* **Validation:** zod
+* **Cookies / Session:** js-cookie
+* **Version Control:** Git & GitHub
+* **Deployment:** Vercel
+
+Dependencies utama yang digunakan:
+
+```bash
+npm install react-hook-form zod js-cookie @radix-ui/react-<komponen> shadcn-ui tailwindcss
+```
+
+---
+
+## Cara Menjalankan Projek Secara Lokal
+
+1. Clone repository:
+
+```bash
+git clone https://github.com/AliDhiaus/article-app.git
+cd article-app
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Jalankan projek:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Buka browser di `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Struktur Projek
 
-## Learn More
+```
+/article-app
+├─ /pages        # Halaman Next.js
+├─ /components   # Komponen UI reusable
+├─ /public       # File statis
+├─ /styles       # Styling global
+├─ /lib          # Helper / util (misal api, cookies)
+└─ README.md     # Dokumentasi projek
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Cara Menggunakan
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Buka halaman login: [Login](https://article-app-bay.vercel.app/login)
+2. Masukkan akun yang tersedia atau daftar baru
+3. Masuk ke dashboard untuk menambahkan atau mengelola artikel
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Kontributor
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
->>>>>>> 86c89e9 (Initial commit from Create Next App)
+* Ali Dhiaus Syamsi – Developer utama
+
+---
+
+## Catatan
+
+* Pastikan koneksi internet stabil saat mengakses live demo di Vercel.
+* Pastikan semua dependencies telah ter-install agar fitur form dan UI berfungsi dengan benar.
