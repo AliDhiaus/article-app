@@ -200,7 +200,8 @@ const page = () => {
             }}
           />
         </CardHeader>
-        <CardContent>
+      </Card>
+        <div>
           <TableData
             rows={currentRows}
             columns={labelCategory}
@@ -212,8 +213,7 @@ const page = () => {
             total={totalPages}
             onChange={setCurrent}
           />
-        </CardContent>
-      </Card>
+        </div>
     </div>
   );
 };

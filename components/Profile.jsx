@@ -33,7 +33,7 @@ const Profile = () => {
 
   return (
     <>
-      <div className="flex flex-col p-6">
+      <div className="flex flex-col p-2 md:p-6">
         <div className="space-y-2 border-b-2 pb-4">
           <h2 className="text-2xl font-bold">{user.username}</h2>
           <p className=" capitalize">{user.role}</p>

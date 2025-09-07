@@ -58,7 +58,7 @@ const DashboardPage = () => {
         <p className="text-gray-500">Ringkasan aktivitas dan data penting.</p>
       </div>
 
-      <div className="grid gap-6 grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2">
         <Card className="shadow-md">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Articles</CardTitle>
@@ -82,11 +82,11 @@ const DashboardPage = () => {
         </Card>
       </div>
 
-      <Card className="shadow-md">
-        <CardHeader>
+      <Card className="shadow-md p-2">
+        <div>
           <CardTitle>Artikel Terbaru</CardTitle>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div>
           <div className="hidden md:block w-full">
             <Table className="w-full table-fixed border">
               <TableHeader className="bg-gray-100 dark:bg-gray-800">
@@ -168,7 +168,7 @@ const DashboardPage = () => {
               <p className="text-sm">Belum ada artikel tersedia</p>
             </div>
           )}
-        </CardContent>
+        </div>
       </Card>
     </div>
   );
