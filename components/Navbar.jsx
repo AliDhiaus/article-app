@@ -23,28 +23,11 @@ const App = () => {
   }, [isDarkMode]);
 
   return (
-    <header className="w-full shadow-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+    <header className="w-full">
       <div className="h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-          MyApp
+        <div>
+          <img src="/images/cw.png" alt="logo" className="w-10 h-10" />
         </div>
-
-        <div className="hidden md:block">
-          <NavigationMenu className="flex gap-2">
-            {listNavUser.map((item, i) => (
-              <NavigationMenuLink
-                key={i}
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
-                <Link href={item.path} className=" dark:bg-slate-800">
-                  {item.label}
-                </Link>
-              </NavigationMenuLink>
-            ))}
-          </NavigationMenu>
-        </div>
-
         <div className="flex items-center gap-2">
           <DarkMode />
           <UserMenu />

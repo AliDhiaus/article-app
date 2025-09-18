@@ -42,12 +42,11 @@ const LoginPage = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      
       Cookies.set("token", response.data.token, { path: "/" });
       Cookies.set("role", response.data.role, { path: "/" });
 
       if (response.data.role === "Admin") {
-        router.push("/admin/dashboard");
+        router.push("/admin/article");
       } else {
         router.push("/user/home");
       }

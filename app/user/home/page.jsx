@@ -1,85 +1,171 @@
-import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { BookOpen, Code, Users, Zap, Search, Star, TrendingUp } from 'lucide-react';
+"use client";
+import React, { useEffect, useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import Navbar from "@/components/Navbar";
+import { CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Star, Loader } from "lucide-react";
+import { formatDate } from "@/lib/utils";
+import PaginationWrapper from "@/components/PaginationWrapper";
+import Search from "@/components/Search";
+import { FilterCompo } from "@/components/FilterCompo";
+import { useDebounce } from "@/hooks/useDebounce";
+import Link from "next/link";
+import {
+  fetchArticlesAndCategories,
+  setSelectedCategory,
+  setSearch,
+  setPage,
+} from "@/app/redux/slices/DataSlice";
+import { useFavorites } from "@/hooks/useFavorite";
 
-const page = () => {
-  const categories = [
-    { name: "React", count: 25, icon: Code, color: "bg-blue-500" },
-    { name: "Next.js", count: 18, icon: Zap, color: "bg-black" },
-    { name: "TypeScript", count: 15, icon: BookOpen, color: "bg-blue-600" },
-    { name: "Tools", count: 12, icon: Users, color: "bg-green-500" }
-  ];
+const Page = () => {
+  const { toggleFavorite, isFavorite } = useFavorites();
+  const dispatch = useDispatch();
+  const { articles, categories, selectedCategory, search, page } = useSelector(
+    (state) => state.data
+  );
+  const loading = useSelector((state) => state.ui.loading);
+  const debouncedSearch = useDebounce(search, 400);
+  const perPage = 9;
 
-  const stats = [
-    { label: "Total Artikel", value: "150+", icon: BookOpen },
-    { label: "Developer", value: "2.5K+", icon: Users },
-    { label: "Kategori", value: "12", icon: Code },
-    { label: "Views", value: "50K+", icon: TrendingUp }
-  ];
+  useEffect(() => {
+    dispatch(fetchArticlesAndCategories());
+  }, [dispatch]);
+
+  const filteredArticles = useMemo(() => {
+    let data = articles;
+
+    if (selectedCategory !== "all") {
+      data = data.filter((a) => a.category.id === selectedCategory);
+    }
+
+    if (debouncedSearch.trim()) {
+      data = data.filter((a) =>
+        a.title.toLowerCase().includes(debouncedSearch.toLowerCase())
+      );
+    }
+
+    return data;
+  }, [articles, selectedCategory, debouncedSearch]);
+
+  const totalPages = Math.ceil(filteredArticles.length / perPage);
+  const paginatedArticles = filteredArticles.slice(
+    (page - 1) * perPage,
+    page * perPage
+  );
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader className="w-12 h-12 animate-spin" />
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <section className="relative overflow-hidden px-4">
-        <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]"></div>
-        <div className="max-w-6xl mx-auto text-center relative">
-          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-sm font-medium mb-6">
-            <Star className="w-4 h-4" />
-            Platform Learning Developer Terbaik
-          </div>
-          
-          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 bg-clip-text text-transparent mb-6">
-            Artikel 
-            <br />
-            <span className="text-blue-600">Developer Modern</span>
-          </h1>
-          
-          <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Jelajahi artikel terbaru berdasarkan kategori & pencarian. 
-            Tingkatkan skill development Anda dengan konten berkualitas dari expert.
-          </p>
-        </div>
-      </section>
+    <>
+      <div
+        className="flex flex-col justify-center items-center text-center gap-2  
+             p-4 text-white inset-0 bg-black/50"
+        style={{
+          backgroundImage: "url('/images/metaverse.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <Navbar />
+        <p className="text-sm">Blog genzet</p>
+        <h1 className="text-3xl">The Journal : Design Resources</h1>
+        <h1 className="text-3xl">Iterviews, and Indeustry News</h1>
+        <p className="text-sm">Your daily dose of design insights!</p>
+        <div className="flex items-center space-x-4">
+          <Search
+            labelSearch="Cari Artikel..."
+            onSearch={(value) => dispatch(setSearch(value))}
+          />
 
-      <section className="px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <Card key={index} className="text-center border-0 shadow-sm bg-white/50 backdrop-blur">
-                <CardContent className="pt-6">
-                  <stat.icon className="w-8 h-8 mx-auto mb-3 text-blue-600" />
-                  <div className="text-2xl font-bold text-slate-900">{stat.value}</div>
-                  <div className="text-sm text-slate-600">{stat.label}</div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <FilterCompo
+            categories={categories}
+            selected={selectedCategory}
+            onChange={(id) => dispatch(setSelectedCategory(id))}
+          />
         </div>
-      </section>
+      </div>
+      <div className="px-6">
+        <div className="grid xl:grid-cols-3 md:grid-cols-2 gap-6 mt-6">
+          {paginatedArticles.map((item) => (
+            <div
+              key={item.id}
+              className="flex flex-col space-y-2 overflow-hidden rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 bg-white dark:bg-slate-900 dark:text-white border group"
+            >
+              <div className="relative isolate">
+                {item.imageUrl ? (
+                  <Link href={`home/article/${item.id}`} className="block">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.title}
+                      className="h-52 w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </Link>
+                ) : (
+                  <Link
+                    href={`home/article/${item.id}`}
+                    className="h-52 w-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm dark:bg-slate-800"
+                  >
+                    No Image
+                  </Link>
+                )}
 
-      <section className="py-16 px-4 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-slate-900 mb-2">Kategori Populer</h2>
-            <p className="text-slate-600">Jelajahi konten berdasarkan teknologi dan topik favorit Anda</p>
-          </div>
+                <div className="absolute p-2 top-0 right-0">
+                  <button
+                    onClick={() => toggleFavorite(item.id)}
+                    className="p-2 rounded-full bg-white shadow hover:bg-pink-50"
+                  >
+                    <Star
+                      size={18}
+                      fill={isFavorite(item.id) ? "currentColor" : "none"}
+                      className={`transition-colors ${
+                        isFavorite(item.id) ? "text-red-500" : "text-gray-500"
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {categories.map((category, index) => (
-              <Card key={index} className="group cursor-pointer hover:shadow-lg transition-all duration-300 border-0 bg-white">
-                <CardContent className="p-6 text-center">
-                  <div className={`inline-flex w-12 h-12 items-center justify-center rounded-lg ${category.color} mb-4 group-hover:scale-110 transition-transform`}>
-                    <category.icon className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold text-slate-900 mb-1">{category.name}</h3>
-                  <p className="text-sm text-slate-600">{category.count} artikel</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+              <Link
+                href={`home/article/${item.id}`}
+                className="flex flex-col p-4"
+              >
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                  {formatDate(item.createdAt)}
+                </p>
+                <h2 className="text-lg font-semibold line-clamp-2 group-hover:text-indigo-600 transition-colors duration-300">
+                  {item.title}
+                </h2>
+                <div
+                  className="prose prose-sm max-w-none line-clamp-3 mt-2 text-gray-700 dark:text-gray-300"
+                  dangerouslySetInnerHTML={{ __html: item.content }}
+                />
+
+                <div className="mt-4">
+                  <p className="bg-blue-50 px-2 py-1 font-semibold rounded-full text-xs text-blue-600 dark:bg-blue-950 dark:text-blue-400 w-fit">
+                    {item.category.name}
+                  </p>
+                </div>
+              </Link>
+            </div>
+          ))}
         </div>
-      </section>
-    </div>
+
+        <PaginationWrapper
+          totalPages={totalPages}
+          currentPage={page}
+          onPageChange={(p) => dispatch(setPage(p))}
+        />
+      </div>
+    </>
   );
 };
 
-export default page;
+export default Page;

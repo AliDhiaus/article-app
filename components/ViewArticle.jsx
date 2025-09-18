@@ -50,7 +50,10 @@ const ViewArticle = () => {
               className="w-full h-auto object-cover rounded-md"
             />
           )}
-          <p>{article.content}</p>
+          <div
+            className="p-2 bg-gray-100 rounded"
+            dangerouslySetInnerHTML={{ __html: article.content }}
+          />
           <div className="text-sm text-gray-500">
             <span>Category: {article.category?.name}</span> |{" "}
             <span>Author: {article.user?.username}</span> |{" "}

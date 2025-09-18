@@ -1,21 +1,25 @@
-import React from 'react'
-import DarkMode from './DarkMode'
-import UserMenu from './UserMenu'
+  import React from 'react'
+  import DarkMode from './DarkMode'
+  import UserMenu from './UserMenu'
+  import { usePathname } from 'next/navigation';
 
-const Header = () => {
-  return (
-    <header className="w-full shadow-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-      <div className="h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-          MyApp
+  const Header = () => {
+    const pathname = usePathname();
+    const name = pathname.split("/").pop();
+    const nameCapitalize = name.charAt(0).toUpperCase() + name.slice(1);
+    return (
+      <header className="w-full shadow-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+        <div className="h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8">
+          <div className="text-2xl font-bold">
+            {nameCapitalize}
+          </div>
+          <div className="flex items-center gap-2">
+            <DarkMode />
+            <UserMenu />
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <DarkMode />
-          <UserMenu />
-        </div>
-      </div>
-    </header>
-  )
-}
+      </header>
+    )
+  }
 
-export default Header
+  export default Header

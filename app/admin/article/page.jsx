@@ -1,77 +1,62 @@
 "use client";
-import React, { useEffect, useState, useMemo } from "react";
-import Cookies from "js-cookie";
+import React, { useEffect, useMemo } from "react";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Loader, Plus } from "lucide-react";
-import { api, apiAuth } from "@/lib/api";
 import TableData from "@/components/TableData";
 import { labelArticle } from "@/lib/label-tabel";
 import Search from "@/components/Search";
 import { FilterCompo } from "@/components/FilterCompo";
 import PaginationWrapper from "@/components/PaginationWrapper";
 import { useRouter } from "next/navigation";
-import { useDebounce } from "@/hooks/useDebounce";
 import Swal from "sweetalert2";
+import {
+  fetchArticlesAndCategories,
+  setSelectedCategory,
+  setSearch,
+  setPage,
+  deleteArticle,
+} from "@/app/redux/slices/DataSlice";
+
 
 const Page = () => {
-  const [article, setArticle] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [query, setQuery] = useState("");
-  const [current, setCurrent] = useState(1);
-  const rowsPerPage = 5;
+  const dispatch = useDispatch();
   const router = useRouter();
 
-  const debouncedSearch = useDebounce(query, 400);
+  const { articles, categories, selectedCategory, search, page } = useSelector(
+    (state) => state.data
+  );
+
+  const loading = useSelector((state) => state.ui.loading);
+
+  const rowsPerPage = 10;
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [articleRes, categoryRes] = await Promise.all([
-          api.get("/articles"),
-          api.get("/categories"),
-        ]);
-
-        setArticle(articleRes.data.data);
-        setCategories(categoryRes.data.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-    setToken(Cookies.get("token"));
-  }, []);
+    dispatch(fetchArticlesAndCategories());
+  }, [dispatch]);
 
   const filtered = useMemo(() => {
-    return article.filter((a) => {
+    return articles.filter((a) => {
       const matchCategory =
-        selectedCategory === "all" || a.category.id === selectedCategory;
-      const matchSearch = a.title
-        .toLowerCase()
-        .includes(debouncedSearch.toLowerCase());
-
+        selectedCategory === "all" || String(a.category.id) === String(selectedCategory);
+      const matchSearch = (a.title || "").toLowerCase().includes(search.toLowerCase());
       return matchCategory && matchSearch;
     });
-  }, [article, selectedCategory, debouncedSearch]);
+  }, [articles, selectedCategory, search]);
 
   const totalPages = Math.ceil(filtered.length / rowsPerPage);
   const currentRows = filtered.slice(
-    (current - 1) * rowsPerPage,
-    current * rowsPerPage
+    (page - 1) * rowsPerPage,
+    page * rowsPerPage
   );
 
   const handleView = (id) => {
-    router.push(`/admin/article/view/${id}`);
+    router.push(`/admin/article/${id}/view`);
   };
 
   const handleEdit = (id) => {
-    router.push(`/admin/article/edit/${id}`);
+    router.push(`/admin/article/${id}/edit`);
   };
 
   const handleDelete = async (id) => {
@@ -88,9 +73,7 @@ const Page = () => {
 
     if (confirm.isConfirmed) {
       try {
-        await apiAuth(token).delete(`/articles/${id}`);
-        setArticle((prev) => prev.filter((item) => item.id !== id));
-
+        await dispatch(deleteArticle(id)).unwrap();
         Swal.fire({
           icon: "success",
           title: "Terhapus!",
@@ -119,11 +102,8 @@ const Page = () => {
 
   return (
     <div className="space-y-6">
-      <div className="border-b-2">
-        <h1 className="text-2xl font-bold">Manajemen Artikel</h1>
-        <p className="text-gray-500 pb-2">
-          Kelola artikel, kategori, dan konten terbaru dengan mudah.
-        </p>
+      <div className="border-b-2 p-2">
+        <h1 className="text-2xl font-bold">Total Articles: {articles.length}</h1>
       </div>
       <div className="flex justify-between items-center">
         <Button
@@ -140,14 +120,14 @@ const Page = () => {
           <Search
             labelSearch="Search by title..."
             onSearch={(value) => {
-              setQuery(value);
-              setCurrent(1);
+              dispatch(setSearch(value));
+              dispatch(setPage(1));
             }}
           />
           <FilterCompo
             categories={categories}
             value={selectedCategory}
-            onChange={setSelectedCategory}
+            onChange={(val) => dispatch(setSelectedCategory(val))}
           />
         </div>
       </div>
@@ -161,9 +141,9 @@ const Page = () => {
           onDelete={handleDelete}
         />
         <PaginationWrapper
-          current={current}
+          current={page}
           total={totalPages}
-          onChange={setCurrent}
+          onChange={(val) => dispatch(setPage(val))}
         />
       </div>
     </div>

@@ -1,15 +1,16 @@
+"use client"
 import React from "react";
-import Navbar from "../../components/Navbar";
+import { Provider } from "react-redux";
+import { store } from '@/app/redux/Store'
 
 const layout = ({ children }) => {
   
   return (
     <div>
-      <Navbar />
-      <main className="p-4 w-full">
-        <div className="bg-white dark:bg-slate-900">
+      <main className="w-full">
+         <Provider store={store}>
           {children}
-        </div>
+        </Provider>
       </main>
     </div>
   );
