@@ -19,15 +19,14 @@ import {
   deleteArticle,
 } from "@/app/redux/slices/DataSlice";
 
-
 const Page = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-
+  
   const { articles, categories, selectedCategory, search, page } = useSelector(
     (state) => state.data
   );
-
+  
   const loading = useSelector((state) => state.ui.loading);
 
   const rowsPerPage = 10;

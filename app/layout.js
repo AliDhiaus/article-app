@@ -15,16 +15,10 @@ export const metadata = {
   title: "Article App",
   description: "A modern Progressive Web App for reading and managing articles.",
   lang: "en",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
   icons: [
     { rel: "icon", url: "/images/cw.png" },
     { rel: "apple-touch-icon", url: "/images/cw.png" },
   ],
-  themeColor: "#4f46e5",
   openGraph: {
     title: "Article App - Read & Manage Articles",
     description: "Stay updated with the latest articles in education, news, and tech.",
@@ -53,13 +47,16 @@ export const metadata = {
   },
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: "#4f46e5",
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-       <head>
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#4f46e5" />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
