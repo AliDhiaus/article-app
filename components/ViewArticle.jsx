@@ -5,6 +5,7 @@ import { api } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
 import { Loader } from "lucide-react";
+import { dummyArticles } from "@/lib/dummy-data";
 
 const ViewArticle = () => {
   const params = useParams();
@@ -19,6 +20,8 @@ const ViewArticle = () => {
         setArticle(response.data);
       } catch (err) {
         console.error(err);
+        const dummy = dummyArticles.find((a) => a.id === articleId);
+        setArticle(dummy);
       } finally {
         setLoading(false)
       }

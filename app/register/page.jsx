@@ -33,7 +33,6 @@ const RegisterPage = () => {
   const onSubmit = async (data) => {
     try {
       const response = await api.post("/auth/register", data);
-      console.log(response.data);
       Swal.fire({
         icon: "success",
         title: "Registrasi berhasil",

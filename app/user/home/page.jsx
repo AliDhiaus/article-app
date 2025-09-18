@@ -2,14 +2,11 @@
 import React, { useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Navbar from "@/components/Navbar";
-import { CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Star, Loader } from "lucide-react";
-import { formatDate } from "@/lib/utils";
+import { Loader } from "lucide-react";
 import PaginationWrapper from "@/components/PaginationWrapper";
 import Search from "@/components/Search";
 import { FilterCompo } from "@/components/FilterCompo";
 import { useDebounce } from "@/hooks/useDebounce";
-import Link from "next/link";
 import {
   fetchArticlesAndCategories,
   setSelectedCategory,
@@ -17,6 +14,7 @@ import {
   setPage,
 } from "@/app/redux/slices/DataSlice";
 import { useFavorites } from "@/hooks/useFavorite";
+import CardArtikel from "@/components/CardArtikel";
 
 const Page = () => {
   const { toggleFavorite, isFavorite } = useFavorites();
@@ -93,75 +91,11 @@ const Page = () => {
         </div>
       </div>
       <div className="px-6">
-        <div className="grid xl:grid-cols-3 md:grid-cols-2 gap-6 mt-6">
-          {paginatedArticles.map((item) => (
-            <div
-              key={item.id}
-              className="flex flex-col space-y-2 overflow-hidden rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 bg-white dark:bg-slate-900 dark:text-white border group"
-            >
-              <div className="relative isolate">
-                {item.imageUrl ? (
-                  <Link href={`home/article/${item.id}`} className="block">
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title}
-                      className="h-52 w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </Link>
-                ) : (
-                  <Link
-                    href={`home/article/${item.id}`}
-                    className="h-52 w-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm dark:bg-slate-800"
-                  >
-                    No Image
-                  </Link>
-                )}
-
-                <div className="absolute p-2 top-0 right-0">
-                  <button
-                    onClick={() => toggleFavorite(item.id)}
-                    className="p-2 rounded-full bg-white shadow hover:bg-pink-50"
-                  >
-                    <Star
-                      size={18}
-                      fill={isFavorite(item.id) ? "currentColor" : "none"}
-                      className={`transition-colors ${
-                        isFavorite(item.id) ? "text-red-500" : "text-gray-500"
-                      }`}
-                    />
-                  </button>
-                </div>
-              </div>
-
-              <Link
-                href={`home/article/${item.id}`}
-                className="flex flex-col p-4"
-              >
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-                  {formatDate(item.createdAt)}
-                </p>
-                <h2 className="text-lg font-semibold line-clamp-2 group-hover:text-indigo-600 transition-colors duration-300">
-                  {item.title}
-                </h2>
-                <div
-                  className="prose prose-sm max-w-none line-clamp-3 mt-2 text-gray-700 dark:text-gray-300"
-                  dangerouslySetInnerHTML={{ __html: item.content }}
-                />
-
-                <div className="mt-4">
-                  <p className="bg-blue-50 px-2 py-1 font-semibold rounded-full text-xs text-blue-600 dark:bg-blue-950 dark:text-blue-400 w-fit">
-                    {item.category.name}
-                  </p>
-                </div>
-              </Link>
-            </div>
-          ))}
-        </div>
-
+        <CardArtikel paginatedArticles={paginatedArticles} toggleFavorite={toggleFavorite} isFavorite={isFavorite} isGuest={false}/>
         <PaginationWrapper
-          totalPages={totalPages}
-          currentPage={page}
-          onPageChange={(p) => dispatch(setPage(p))}
+          total={totalPages}
+          current={page}
+          onChange={(p) => dispatch(setPage(p))}
         />
       </div>
     </>

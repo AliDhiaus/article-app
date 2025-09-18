@@ -105,16 +105,6 @@ const Page = () => {
         <h1 className="text-2xl font-bold">Total Articles: {articles.length}</h1>
       </div>
       <div className="flex justify-between items-center">
-        <Button
-          asChild
-          className="bg-blue-600 hover:bg-blue-900 px-4 py-2 dark:bg-blue-300"
-        >
-          <Link href="/admin/article/add">
-            <Plus className="w-5 h-5" />
-            <span className="hidden md:flex">Article</span>
-          </Link>
-        </Button>
-
         <div className="flex gap-2">
           <Search
             labelSearch="Search by title..."
@@ -129,6 +119,17 @@ const Page = () => {
             onChange={(val) => dispatch(setSelectedCategory(val))}
           />
         </div>
+        
+        <Button
+          asChild
+          className="bg-blue-600 hover:bg-blue-900 px-4 py-2 dark:bg-blue-300"
+        >
+          <Link href="/admin/article/add">
+            <Plus className="w-5 h-5" />
+            <span className="hidden md:flex">Article</span>
+          </Link>
+        </Button>
+
       </div>
 
       <div>

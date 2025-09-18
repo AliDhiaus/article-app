@@ -19,9 +19,8 @@ const TableData = ({ columns = [], rows = [], onView, onEdit, onDelete }) => {
         <Table className="w-full">
           <TableHeader className="bg-gray-100 dark:bg-gray-800">
             <TableRow>
-              <TableHead className="w-16 text-center">No</TableHead>
               {columns.map((col, idx) => (
-                <TableHead key={idx} className="min-w-32">
+                <TableHead key={idx} className="min-w-32 text-center">
                   {col.label}
                 </TableHead>
               ))}
@@ -31,19 +30,32 @@ const TableData = ({ columns = [], rows = [], onView, onEdit, onDelete }) => {
           <TableBody>
             {rows.map((row, i) => (
               <TableRow key={row.id}>
-                <TableCell className="text-center">{i + 1}</TableCell>
                 {columns.map((col, index) => {
                   const value = getValueTabel(row, col.field);
-                  const displayValue =
-                    col.field === "createdAt" ? formatDate(value) : value;
-
+                  let content;
+                  if(col.field === "createdAt") {
+                    content = formatDate(value);
+                  } else if(col.field === "imageUrl") {
+                    content = (
+                      <div className="flex justify-center items-center">
+                        <img
+                          src={value}
+                          alt={row.title}
+                          className="w-16 h-16 object-cover rounded"
+                        />
+                      </div>
+                    )
+                  } else {
+                    content = value;
+                  }
+                  const alignmentClass = col.field === "title" ? "text-left" : "text-center";
                   return (
                     <TableCell
                       key={index}
-                      className="font-medium max-w-[200px] truncate"
-                      title={displayValue}
+                      className={`font-medium max-w-[200px] truncate ${alignmentClass} text-gray-700 dark:text-gray-100`}
+                      title={content}
                     >
-                      {displayValue}
+                      {content}
                     </TableCell>
                   );
                 })}
