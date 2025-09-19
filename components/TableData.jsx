@@ -48,7 +48,7 @@ const TableData = ({ columns = [], rows = [], onView, onEdit, onDelete }) => {
                   } else {
                     content = value;
                   }
-                  const alignmentClass = col.field === "title" ? "text-left" : "text-center";
+                  const alignmentClass = col.field === "title" || col.field === "name" ? "text-left" : "text-center";
                   return (
                     <TableCell
                       key={index}
